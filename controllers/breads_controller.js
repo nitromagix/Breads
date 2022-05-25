@@ -4,6 +4,18 @@ const Bread = require('../models/bread');
 
 const breads = express.Router()
 
+
+
+// INDEX
+breads.get('/', (req, res) => {
+    res.render('index',
+      {
+        breads: Bread
+      }
+    )
+  // res.send(Bread)
+})
+
 breads.get('/:arrayIndex', (req, res) => {
    const route = '/breads/';
    const params = req.params;
