@@ -4,11 +4,12 @@ const Bread = require('../models/bread');
 
 const breads = express.Router()
 
-// INDEX
 breads.get('/:arrayIndex', (req, res) => {
-   const name = '/breads';
-   res.send(Bread[req.params.arrayIndex])
-   trace('page served (GET)')(name);
+   const route = '/breads/';
+   const params = req.params;
+   res.send(Bread[params.arrayIndex])
+   trace('page served (GET)')(route);
+   trace('| Params: ')(params);
 })
 
 module.exports = breads
