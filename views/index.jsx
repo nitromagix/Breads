@@ -1,7 +1,9 @@
 const React = require('react')
 const Default = require('./layouts/default')
+const {trace} = require('../helper');
 
 function Index({ breads }) {
+   trace('| views/index.jsx')('Index()')
    return (
       <Default>
          <h2>Index Page</h2>

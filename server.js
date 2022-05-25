@@ -19,19 +19,22 @@ app.engine('jsx', expressReactViews)
 app.use('/breads', breadsController);
 
 app.get('/', (req, res) => {
-   const route = '/';
+   trace('/')(req.params);
+
    res.send(stub('Breads'))
-   trace('page served (GET)')(route);
+
 });
 
 app.get('*', (req, res) => {
-   const route = '404';
+   const route = '404'
    const params = req.params;
    const query = req.query;
+   trace('*')(route);
+   trace(' | params')(params);
+   trace(' | query')(query);
+   
    res.status(404).send(stub(route))
-   trace('page served (GET)')(route);
-   trace('| Params: ')(params);
-   trace('| Query: ')(query);
+
 });
 
 app.listen(PORT, () => {
