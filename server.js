@@ -19,7 +19,7 @@ app.get('*', (req, res) => {
    res.status(404).send(stub(name))
    trace('page served (GET)')(name);
    trace('| Params: ')(params);
-   trace('| Queries: ')(query);
+   trace('| Query: ')(query);
 });
 
 app.listen(3333, () => {
