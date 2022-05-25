@@ -4,11 +4,15 @@ require("dotenv").config();
 const express = require('express');
 const {trace, stub} = require('./helper');
 
+const PORT = process.env.PORT;
 const app = express();
+
+const breadsController = require('./controllers/breads_controller');
+app.use('/breads', breadsController);
 
 app.get('/', (req, res) => {
    const name = '/';
-   res.send(stub(name))
+   res.send(stub('Breads'))
    trace('page served (GET)')(name);
 });
 
@@ -22,6 +26,6 @@ app.get('*', (req, res) => {
    trace('| Query: ')(query);
 });
 
-app.listen(3333, () => {
-   trace('Server listening | PORT')(process.env.PORT);
+app.listen(PORT, () => {
+   trace('Server nomming | PORT')(PORT);
 });
