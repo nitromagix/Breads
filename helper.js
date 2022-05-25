@@ -2,11 +2,11 @@
 
 
 const trace = label => value => {
-   console.log(`${label} --> ${value}`);
+   console.log(`${label} --> ${typeof value === 'object' ? JSON.stringify(value) : value}`);
    return value;
 };
 
-const stub = (name) => `<h1>Rest-Rant</h1><h2>${name}</h2>`;
+const stub = (name) => `<h1>${name}</h1>`;
 
 module.exports = {
    trace,
