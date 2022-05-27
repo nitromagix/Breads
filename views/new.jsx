@@ -5,6 +5,7 @@ const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
 function New() {
+   trace(' | new.jsx')('New()')
    return (
       <Default>
          <h2>Add a new bread</h2>

@@ -5,7 +5,7 @@ const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
 function Index({ breads }) {
-   trace('| views/index.jsx')('Index()')
+   trace(' | index.jsx')('Index()')
    return (
       <Default>
          <h2>Index Page</h2>
@@ -25,9 +25,7 @@ function Index({ breads }) {
             }
          </ul>
       </Default>
-
    )
 }
-
 
 module.exports = Index

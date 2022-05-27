@@ -2,10 +2,10 @@
 
 const React = require('react');
 const Default = require('./layouts/default');
+const { trace } = require('../helper');
 
 function Show({ bread }) {
-   // Confirm we are getting our bread data in the terminal.
-   // console.log(bread.name)
+   trace(' | new.show')('Show()')
    return (
       <Default>
          <h3>{bread.name}</h3>
