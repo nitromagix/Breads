@@ -1,6 +1,8 @@
+'use strict';
+
 const React = require('react')
 const Default = require('./layouts/default')
-const {trace} = require('../helper');
+const { trace } = require('../helper');
 
 function Index({ breads }) {
    trace('| views/index.jsx')('Index()')
