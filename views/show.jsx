@@ -5,7 +5,7 @@ const Default = require('./layouts/default');
 const { trace } = require('../helper');
 
 function Show({ bread, index }) {
-   trace(' | new.show')('Show()')
+   trace(' | show.jsx')('Show()')
    return (
       <Default>
          <h3>{bread.name}</h3>

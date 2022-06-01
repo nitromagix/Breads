@@ -1,7 +1,9 @@
 const React = require('react')
 const Default = require('./layouts/default')
+const { trace } = require('../helper');
 
 function Edit({ bread, index }) {
+   trace(' | edit.jsx')('Edit()')
    return (
       <Default>
          <h2>Edit a bread</h2>

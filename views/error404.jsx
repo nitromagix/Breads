@@ -5,7 +5,7 @@ const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
 function error404({ arrayIndex }) {
-   trace(' | error404.jsx --> arrayIndex')(arrayIndex);
+   trace(' | error404.jsx')('error404()');
    return (
       <Default>
          <main>
