@@ -22,19 +22,20 @@ breads.get('/new', (req, res) => {
    res.render('new')
 });
 
+   //    trace('/breads/')(params);
+
 // SHOW
 breads.get('/:arrayIndex', (req, res) => {
-   //    trace('/breads/')(params);
    if (Bread[req.params.arrayIndex]) {
-      res.render('show', {
-         bread: Bread[req.params.arrayIndex],
-      })
+     res.render('show', {
+       bread:Bread[req.params.arrayIndex],
+       index: req.params.arrayIndex,
+     })
    } else {
-      res.render('error404', {
-         arrayIndex: req.params.arrayIndex
-      }, );
+     res.render('404')
    }
-});
+ })
+ 
 
 // CREATE
 
@@ -52,5 +53,11 @@ breads.post('/', (req, res) => {
    res.redirect('/breads')
  })
 
+// DELETE
+breads.delete('/:indexArray', (req, res) => {
+   Bread.splice(req.params.indexArray, 1)
+   res.status(303).redirect('/breads')
+ })
+ 
 
 module.exports = breads
