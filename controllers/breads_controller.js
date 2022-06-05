@@ -11,10 +11,15 @@ const breads = express.Router()
 breads.get('/', (req, res) => {
    const params = req.params;
    trace('/breads (GET)')(params);
+   Bread.find()
+      .then(foundBreads => {
+         trace('breads')(foundBreads);
+         res.render('index', {
+            breads: foundBreads,
+            title: 'Index Page'
+         });
+      })
 
-   res.render('index', {
-      breads: Bread
-   });
 })
 
 // NEW
@@ -28,27 +33,50 @@ breads.get('/new', (req, res) => {
 
 
 // EDIT
-breads.get('/:indexArray/edit', (req, res) => {
+breads.get('/:id/edit', (req, res) => {
    const params = req.params;
-   trace('/breads/:indexArray/edit (GET)')(params);
-   res.render('edit', {
-      bread: Bread[req.params.indexArray],
-      index: req.params.indexArray
+   trace('/breads/:id/edit (GET)')(params);
+   Bread.findById(params.id)
+   .then(foundBread => {
+      trace('breads')(foundBread);
+      res.render('edit', {
+         bread: foundBread
+      });
    })
+   .catch(err => {
+      res.send('error404');
+   })
+   // res.render('edit', {
+   //    bread: Bread[req.params.indexArray],
+   //    index: req.params.indexArray
+   // })
 })
 
 // SHOW
-breads.get('/:arrayIndex', (req, res) => {
+
+// breads.get('/:id', (req, res) => {
+//    Bread.findById(req.params.id)
+//       .then(foundBread => {
+//          res.render('show', {
+//             bread: foundBread
+//          })
+//       })
+// })
+
+
+breads.get('/:id', (req, res) => {
    const params = req.params;
-   trace('/breads/:indexArray (GET)')(params);
-   if (Bread[req.params.arrayIndex]) {
-      res.render('show', {
-         bread: Bread[req.params.arrayIndex],
-         index: req.params.arrayIndex,
+   trace('/breads/:id (GET)')(params);
+   Bread.findById(params.id)
+      .then(foundBread => {
+         trace('breads')(foundBread);
+         res.render('show', {
+            bread: foundBread
+         });
       })
-   } else {
-      res.render('show')
-   }
+      .catch(err => {
+         res.send('error404');
+      })
 })
 
 // breads.get('*', (req, res) => {
@@ -58,18 +86,34 @@ breads.get('/:arrayIndex', (req, res) => {
 // })
 
 // CREATE
+
 breads.post('/', (req, res) => {
-   const params = req.params;
-   trace('/breads (POST)')(params);
    if (!req.body.image) {
-      req.body.image = 'https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'
+      req.body.image = undefined
    }
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
    } else {
       req.body.hasGluten = false
    }
-   Bread.push(req.body)
+   Bread.create(req.body)
+   res.redirect('/breads')
+})
+
+
+
+breads.post('/', (req, res) => {
+   const params = req.params;
+   trace('/breads (POST)')(params);
+   if (!req.body.image) {
+      req.body.image = undefined
+   }
+   if (req.body.hasGluten === 'on') {
+      req.body.hasGluten = true
+   } else {
+      req.body.hasGluten = false
+   }
+   Bread.create(req.body)
    res.redirect('/breads')
 })
 

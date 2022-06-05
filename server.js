@@ -2,23 +2,38 @@
 
 'use strict';
 
+// DEPENDENCIES
+
 require("dotenv").config();
 const express = require('express');
 const expressReactViews = require('express-react-views').createEngine();
 const breadsController = require('./controllers/breads_controller');
-const {trace, stub} = require('./helper');
+const mongoose = require('mongoose');
+const {
+   trace,
+   stub
+} = require('./helper');
+const methodOverride = require('method-override');
 
 const PORT = process.env.PORT;
 
 const app = express();
 
-// DEPENDENCIES
-const methodOverride = require('method-override')
 
 // MIDDLEWARE
 
+mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+   },
+   () => trace('connected to mongo')(process.env.MONGO_URI)
+)
+
+
 app.use(express.static('./public'))
-app.use(express.urlencoded({extended: true}))
+app.use(express.urlencoded({
+   extended: true
+}))
 app.use(methodOverride('_method'))
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jsx')
@@ -42,11 +57,11 @@ app.get('*', (req, res) => {
    trace('*')(route);
    trace(' | params')(params);
    trace(' | query')(query);
-   
+
    res.status(404).send(stub(route))
 
 });
 
 app.listen(PORT, () => {
-   trace('Server nomming | PORT')(PORT);
+   trace('Server listening')(`Port: ${PORT}`);
 });

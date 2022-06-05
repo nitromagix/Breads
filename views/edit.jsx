@@ -2,12 +2,12 @@ const React = require('react')
 const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
-function Edit({ bread, index }) {
+function Edit({ bread }) {
    trace(' | edit.jsx')('Edit()')
    return (
       <Default>
          <h2>Edit a bread</h2>
-         <form action={`/breads/${index}?_method=PUT`} method="POST">
+         <form action={`/breads/${bread.id}?_method=PUT`} method="POST">
             <label htmlFor="name">Name</label>
             <input
                type="text"
@@ -33,7 +33,11 @@ function Edit({ bread, index }) {
             />
             <br />
             <input type="submit" />
+
          </form>
+         <div>
+            <a href={`/breads/${bread.id}`}><button>Cancel</button></a>
+         </div>
       </Default>
    )
 }

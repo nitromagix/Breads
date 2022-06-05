@@ -1,11 +1,13 @@
 'use strict';
 
-const React = require('react')
-const Default = require('./layouts/default')
+const React = require('react');
+const Default = require('./layouts/default');
+const Bread = require('../models/bread');
 const { trace } = require('../helper');
 
-function Index({ breads }) {
+function Index({ breads, title }) {
    trace(' | index.jsx')('Index()')
+   trace('breads')(breads)
    return (
       <Default>
          <h2>Index Page</h2>
@@ -16,7 +18,7 @@ function Index({ breads }) {
                breads.map((bread, index) => {
                   return (
                      <li key={index}>
-                        <a href={`/breads/${index}`}>
+                        <a href={`/breads/${bread.id}`}>
                            {bread.name}
                         </a>
                      </li>
@@ -24,6 +26,9 @@ function Index({ breads }) {
                })
             }
          </ul>
+         <div>
+            <a href={`/breads/new`}><button>Add a new bread</button></a>
+         </div>
       </Default>
    )
 }
