@@ -118,9 +118,9 @@ breads.post('/', (req, res) => {
 })
 
 // UPDATE
-breads.put('/:arrayIndex', (req, res) => {
+breads.put('/:id', (req, res) => {
    const params = req.params;
-   trace('/breads/:arrayIndex (PUT)')(params);
+   trace('/breads/:id (PUT)')(params);
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
    } else {

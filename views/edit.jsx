@@ -32,7 +32,7 @@ function Edit({ bread }) {
                defaultChecked={bread.hasGluten}
             />
             <br />
-            <input type="submit" />
+            <input type="submit" value='Save'/>
 
          </form>
          <div>
