@@ -1,38 +1,67 @@
 'use strict';
 
 const express = require('express')
+const Bread = require('../models/bread');
+const Seed = require('../models/seed')
+const breads = express.Router()
+
 const {
    trace
 } = require('../helper');
-const Bread = require('../models/bread');
-const breads = express.Router()
 
-// INDEX
+// RETRIEVE - INDEX
 breads.get('/', (req, res) => {
    const params = req.params;
    trace('/breads (GET)')(params);
    Bread.find()
       .then(foundBreads => {
-         trace('breads')(foundBreads);
+         // trace('breads')(foundBreads);
          res.render('index', {
             breads: foundBreads,
-            title: 'Index Page'
+            title: 'Bread'
          });
       })
 
 })
 
-// NEW
+breads.get('/', (req, res) => {
+   const params = req.params;
+   trace('/breads (GET)')(params);
+   Bread.find()
+      .then(foundBreads => {
+         // trace('breads')(foundBreads);
+         res.render('index', {
+            breads: foundBreads,
+            title: 'Bread'
+         });
+      })
+
+})
+
+// RETRIVE - DATA SEED
+
+breads.get('/data/seed', (req, res) => {
+   const params = req.params;
+   trace('/breads/data/seed (GET)')(params);
+   const breads = Seed;
+   Bread.insertMany(breads)
+     .then(createdBreads => {
+       res.redirect('/breads')
+     })
+ })
+ 
+
+// RETRIEVE - NEW
+
 breads.get('/new', (req, res) => {
    const params = req.params;
    trace('/breads/new (GET)')(params);
    res.render('new')
 });
 
-//    trace('/breads/')(params);
-
 
 // RETRIEVE - EDIT
+
 breads.get('/:id/edit', (req, res) => {
    const params = req.params;
    const id = params.id;
@@ -74,7 +103,7 @@ breads.post('/', (req, res) => {
    const params = req.params;
    trace('/breads (POST)')(params);
    if (!req.body.image) {
-      req.body.image = undefined
+      req.body.image = '/images/default_bread.jpg'
    }
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
@@ -89,6 +118,7 @@ breads.post('/', (req, res) => {
 
 
 // UPDATE
+
 breads.put('/:id', (req, res) => {
    const params = req.params;
    const id = params.id;

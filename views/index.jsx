@@ -6,8 +6,8 @@ const Bread = require('../models/bread');
 const { trace } = require('../helper');
 
 function Index({ breads, title }) {
-   trace(' | index.jsx')('Index()')
-   trace('breads')(breads)
+   trace(' | index.jsx')('Index()');
+   // trace('breads')(breads);
    return (
       <Default>
          <h2>{title}</h2>
