@@ -1,4 +1,5 @@
 // require mongoose 
+const res = require('express/lib/response')
 const mongoose = require('mongoose')
 // creating shorthand for the Schema constructor 
 const {
@@ -21,8 +22,13 @@ const breadSchema = new Schema({
    }
 })
 
+// helper methods 
+breadSchema.methods.getBakedBy = function () {
+   return `${this.name} was baked with gloves by ${this.baker}`
+}
+
+ breadSchema.static('getBreadsBakedBy', function(baker) { return this.find({ baker }); });
 
 const Bread = mongoose.model('Bread', breadSchema)
 
 module.exports = Bread;
-

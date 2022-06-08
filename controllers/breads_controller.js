@@ -13,7 +13,8 @@ const {
 
 breads.get('/', (req, res) => {
    const params = req.params;
-   trace('/breads (GET)')(params);
+   // trace('/breads (GET)')(params);
+
    Bread.find()
       .then(foundBreads => {
          // trace('breads')(foundBreads);
@@ -75,12 +76,22 @@ breads.get('/:id', (req, res) => {
    const params = req.params;
    const id = params.id;
    trace('/breads/:id (GET)')(id);
+
+   // let breadsByBaker;
+   // Bread.getBreadsBakedBy('Bakerooski').then((breadsBy) =>{
+   //    breadsByBaker = breadsBy;
+   // })
+
    Bread.findById(id)
       .then(foundBread => {
          // trace('breads')(foundBread);
-         res.render('show', {
-            bread: foundBread
-         });
+         Bread.getBreadsBakedBy(foundBread.baker)
+         .then((breadsBy) =>{
+            res.render('show', {
+               bread: foundBread,
+               breadsByBaker: breadsBy
+            });
+         })
       })
       .catch(err => {
          res.send('error404');

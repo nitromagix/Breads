@@ -2,9 +2,10 @@
 
 const React = require('react');
 const Default = require('./layouts/default');
+const Bread = require('../models/bread');
 const { trace } = require('../helper');
 
-function Show({ bread }) {
+function Show({ bread, breadsByBaker }) {
    trace(' | show.jsx')('Show()')
    return (
       <Default>
@@ -19,7 +20,15 @@ function Show({ bread }) {
             have gluten &lt;&lt;&lt;
          </p>
          <img src={bread.image} alt={bread.name} />
-         <p>Baked by {bread.baker}</p>
+         <p>{bread.getBakedBy()}</p>
+         <p>Other bread baked by {bread.baker}:
+            <ul>
+               {breadsByBaker.map((breadBy) => {
+                  return <li><a href={`/breads/${breadBy.id}`}>{breadBy.name}</a></li>
+               })}
+            </ul>
+         </p>
+         {/* {breadsByBaker.toString()} */}
          <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
 
          <form action={`/breads/${bread.id}?_method=DELETE`} method="POST">
