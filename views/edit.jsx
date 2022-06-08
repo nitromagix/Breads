@@ -2,7 +2,7 @@ const React = require('react')
 const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
-function Edit({ bread }) {
+function Edit({ bread}) {
    trace(' | edit.jsx')('Edit()')
    return (
       <Default>
@@ -31,8 +31,22 @@ function Edit({ bread }) {
                id="hasGluten"
                defaultChecked={bread.hasGluten}
             />
+
+            <label htmlFor="baker">Baker</label>
+            <select 
+            name="baker" 
+            id="baker"
+            defaultValue={bread.baker}>
+               <option value="Yeaster">Yeaster</option>
+               <option value="Bakerooski">Bakerooski</option>
+               <option value="Yummy">Yummy</option>
+               <option value="Doughboy">Doughboy</option>
+               <option value="Crusty">Crusty</option>
+               <option value="Carbo">Carbo</option>
+            </select>
+
             <br />
-            <input type="submit" value='Save'/>
+            <input type="submit" value='Save' />
 
          </form>
          <div>

@@ -11,5 +11,10 @@ body {
    display: block;
    margin: auto;
  }
+
+ .error {
+    color: red;
+    font-weight: bold;
+ }
  
  

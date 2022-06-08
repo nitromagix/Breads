@@ -10,16 +10,16 @@ function Show({ bread }) {
       <Default>
          <h3>{bread.name}</h3>
          <p>
-            and it
+            &gt;&gt;&gt;
             {
                bread.hasGluten
                   ? <span> does </span>
                   : <span> does NOT </span>
             }
-            have gluten.
+            have gluten &lt;&lt;&lt;
          </p>
          <img src={bread.image} alt={bread.name} />
-
+         <p>Baked by {bread.baker}</p>
          <a href={`/breads/${bread.id}/edit`}><button>Edit</button></a>
 
          <form action={`/breads/${bread.id}?_method=DELETE`} method="POST">

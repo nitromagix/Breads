@@ -10,19 +10,6 @@ const {
 } = require('../helper');
 
 // RETRIEVE - INDEX
-breads.get('/', (req, res) => {
-   const params = req.params;
-   trace('/breads (GET)')(params);
-   Bread.find()
-      .then(foundBreads => {
-         // trace('breads')(foundBreads);
-         res.render('index', {
-            breads: foundBreads,
-            title: 'Bread'
-         });
-      })
-
-})
 
 breads.get('/', (req, res) => {
    const params = req.params;
@@ -45,11 +32,11 @@ breads.get('/data/seed', (req, res) => {
    trace('/breads/data/seed (GET)')(params);
    const breads = Seed;
    Bread.insertMany(breads)
-     .then(createdBreads => {
-       res.redirect('/breads')
-     })
- })
- 
+      .then(createdBreads => {
+         res.redirect('/breads')
+      })
+})
+
 
 // RETRIEVE - NEW
 
@@ -64,13 +51,16 @@ breads.get('/new', (req, res) => {
 
 breads.get('/:id/edit', (req, res) => {
    const params = req.params;
+   const query = req.query;
    const id = params.id;
+   const error = query.error
    trace('/breads/:id/edit (GET)')(id);
    Bread.findById(id)
       .then(foundBread => {
          trace('breads')(foundBread);
          res.render('edit', {
-            bread: foundBread
+            bread: foundBread,
+            error
          });
       })
       .catch(err => {
@@ -87,7 +77,7 @@ breads.get('/:id', (req, res) => {
    trace('/breads/:id (GET)')(id);
    Bread.findById(id)
       .then(foundBread => {
-         trace('breads')(foundBread);
+         // trace('breads')(foundBread);
          res.render('show', {
             bread: foundBread
          });
@@ -112,7 +102,11 @@ breads.post('/', (req, res) => {
    }
    Bread.create(req.body)
       .then(bread => {
+         // throw new Error('Could not update bread');
          res.redirect('/breads')
+      })
+      .catch(err => {
+         res.redirect(`/breads`,)
       });
 })
 

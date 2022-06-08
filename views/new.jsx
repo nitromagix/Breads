@@ -29,6 +29,16 @@ function New() {
                id="hasGluten"
                defaultChecked
             />
+            <label htmlFor="baker">Baker</label>
+            <select name="baker" id="baker">
+               <option value="Yeaster">Yeaster</option>
+               <option value="Bakerooski">Bakerooski</option>
+               <option value="Yummy">Yummy</option>
+               <option value="Doughboy">Doughboy</option>
+               <option value="Crusty">Crusty</option>
+               <option value="Carbo">Carbo</option>
+            </select>
+
             <br />
             <input type="submit" value='Add bread' />
          </form>
