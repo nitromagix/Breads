@@ -32,42 +32,31 @@ breads.get('/new', (req, res) => {
 //    trace('/breads/')(params);
 
 
-// EDIT
+// RETRIEVE - EDIT
 breads.get('/:id/edit', (req, res) => {
    const params = req.params;
-   trace('/breads/:id/edit (GET)')(params);
-   Bread.findById(params.id)
-   .then(foundBread => {
-      trace('breads')(foundBread);
-      res.render('edit', {
-         bread: foundBread
-      });
-   })
-   .catch(err => {
-      res.send('error404');
-   })
-   // res.render('edit', {
-   //    bread: Bread[req.params.indexArray],
-   //    index: req.params.indexArray
-   // })
+   const id = params.id;
+   trace('/breads/:id/edit (GET)')(id);
+   Bread.findById(id)
+      .then(foundBread => {
+         trace('breads')(foundBread);
+         res.render('edit', {
+            bread: foundBread
+         });
+      })
+      .catch(err => {
+         res.send('error404');
+      })
 })
 
-// SHOW
 
-// breads.get('/:id', (req, res) => {
-//    Bread.findById(req.params.id)
-//       .then(foundBread => {
-//          res.render('show', {
-//             bread: foundBread
-//          })
-//       })
-// })
-
+// RETRIEVE - SHOW
 
 breads.get('/:id', (req, res) => {
    const params = req.params;
-   trace('/breads/:id (GET)')(params);
-   Bread.findById(params.id)
+   const id = params.id;
+   trace('/breads/:id (GET)')(id);
+   Bread.findById(id)
       .then(foundBread => {
          trace('breads')(foundBread);
          res.render('show', {
@@ -79,28 +68,7 @@ breads.get('/:id', (req, res) => {
       })
 })
 
-// breads.get('*', (req, res) => {
-
-//    res.render('error404')
-
-// })
-
 // CREATE
-
-breads.post('/', (req, res) => {
-   if (!req.body.image) {
-      req.body.image = undefined
-   }
-   if (req.body.hasGluten === 'on') {
-      req.body.hasGluten = true
-   } else {
-      req.body.hasGluten = false
-   }
-   Bread.create(req.body)
-   res.redirect('/breads')
-})
-
-
 
 breads.post('/', (req, res) => {
    const params = req.params;
@@ -114,29 +82,46 @@ breads.post('/', (req, res) => {
       req.body.hasGluten = false
    }
    Bread.create(req.body)
-   res.redirect('/breads')
+      .then(bread => {
+         res.redirect('/breads')
+      });
 })
+
 
 // UPDATE
 breads.put('/:id', (req, res) => {
    const params = req.params;
-   trace('/breads/:id (PUT)')(params);
+   const id = params.id;
+   const body = req.body;
+   trace('/breads/:id (PUT)')(id);
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
    } else {
       req.body.hasGluten = false
    }
-   Bread[req.params.arrayIndex] = req.body
-   res.redirect(`/breads/${req.params.arrayIndex}`)
+
+   Bread.findByIdAndUpdate(id, body, {
+         new: true
+      })
+      .then(updatedBread => {
+         console.log(updatedBread)
+         res.redirect(`/breads/${id}`)
+      });
+
 })
 
 
+
 // DELETE
-breads.delete('/:indexArray', (req, res) => {
+
+breads.delete('/:id', (req, res) => {
    const params = req.params;
-   trace('/breads/:arrayIndex (DELETE)')(params);
-   Bread.splice(req.params.indexArray, 1)
-   res.status(303).redirect('/breads')
+   const id = params.id;
+   trace('/breads/:arrayIndex (DELETE)')(id);
+   Bread.findByIdAndDelete(id)
+      .then(deletedBread => {
+         res.status(303).redirect('/breads')
+      })
 })
 
 
