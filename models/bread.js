@@ -1,7 +1,8 @@
-// require mongoose 
+//
+
 const res = require('express/lib/response')
 const mongoose = require('mongoose')
-// creating shorthand for the Schema constructor 
+
 const {
    Schema
 } = mongoose
@@ -17,8 +18,8 @@ const breadSchema = new Schema({
       default: '/images/default_bread.jpg'
    },
    baker: {
-      type: String,
-      enum: ['Yeaster', 'Bakerooski', 'Yummy', 'Doughboy', 'Crusty', 'Carbo']
+      type: Schema.Types.ObjectId,
+      ref: 'Baker'
    }
 })
 

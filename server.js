@@ -8,15 +8,16 @@ require("dotenv").config();
 const express = require('express');
 const expressReactViews = require('express-react-views').createEngine();
 const breadsController = require('./controllers/breads_controller');
+const bakersController = require('./controllers/bakers_controller');
 const mongoose = require('mongoose');
+const methodOverride = require('method-override');
+
 const {
    trace,
    stub
 } = require('./helper');
-const methodOverride = require('method-override');
 
 const PORT = process.env.PORT;
-
 const app = express();
 
 
@@ -42,6 +43,7 @@ app.engine('jsx', expressReactViews)
 
 // ROUTES
 app.use('/breads', breadsController);
+app.use('/bakers', bakersController);
 
 app.get('/', (req, res) => {
    trace('/')(req.params);

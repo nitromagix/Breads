@@ -2,7 +2,7 @@
 
 const express = require('express')
 const Bread = require('../models/bread');
-const Seed = require('../models/seed')
+const Seed = require('../models/bread_seed')
 const breads = express.Router()
 
 const {
@@ -28,9 +28,9 @@ breads.get('/', (req, res) => {
 
 // RETRIVE - DATA SEED
 
-breads.get('/data/seed', (req, res) => {
+breads.get('/data/bread_seed', (req, res) => {
    const params = req.params;
-   trace('/breads/data/seed (GET)')(params);
+   trace('/data/bread_seed (GET)')(params);
    const breads = Seed;
    Bread.insertMany(breads)
       .then(createdBreads => {
