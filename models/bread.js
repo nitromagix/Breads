@@ -14,7 +14,7 @@ const breadSchema = new Schema({
    hasGluten: Boolean,
    image: {
       type: String,
-      default: 'https://placekitten.com/g/200/300'
+      default: '/images/default_bread.jpg'
    },
    baker: {
       type: String,

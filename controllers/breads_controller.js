@@ -103,9 +103,7 @@ breads.get('/:id', (req, res) => {
 breads.post('/', (req, res) => {
    const params = req.params;
    trace('/breads (POST)')(params);
-   if (!req.body.image) {
-      req.body.image = '/images/default_bread.jpg'
-   }
+   if (!req.body.image) { req.body.image = undefined }
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
    } else {
