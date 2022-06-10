@@ -24,6 +24,32 @@ bakers.get('/data/baker_seed', (req, res) => {
       })
 })
 
+// RETRIEVE - SHOW
+
+bakers.get('/:id', (req, res) => {
+   const id = req.params.id
+   trace('/:id (GET)')(id);
+   Baker.findById(id)
+      .populate('breads')
+      .then(foundBaker => {
+         res.render('bakerShow', {
+            baker: foundBaker
+         })
+      })
+})
+
+
+// RETRIEVE - TEST
+
+bakers.get('/', (req, res) => {
+   Baker.find()
+      .populate('breads')
+      .then(foundBakers => {
+         res.send(foundBakers)
+      })
+})
+
+
 
 // export
 module.exports = bakers

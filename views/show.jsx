@@ -21,12 +21,15 @@ function Show({ bread, breadsByBaker }) {
          </p>
          <img src={bread.image} alt={bread.name} />
          <p>{bread.getBakedBy()}</p>
-         <p>Other bread baked by {bread.baker.name}:
+
+         <p>{breadsByBaker && breadsByBaker.length > 1
+            ? <span>Other bread baked by {bread.baker.name}:</span>
+            : ''}
             <ul>
                {breadsByBaker.map((breadBy) => {
                   return (
                      breadBy.id != bread.id
-                        ? <li><a href={`/breads/${breadBy.id}`}>{breadBy.name}</a></li>
+                        ? <li key={breadBy.id}><a href={`/breads/${breadBy.id}`}>{breadBy.name}</a></li>
                         : '')
                })}
             </ul>

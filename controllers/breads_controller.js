@@ -16,15 +16,18 @@ breads.get('/', (req, res) => {
    const params = req.params;
    // trace('/breads (GET)')(params);
 
-   Bread.find()
-      .then(foundBreads => {
-         // trace('breads')(foundBreads);
-         res.render('index', {
-            breads: foundBreads,
-            title: 'Bread'
-         });
+   Baker.find()
+      .then(foundBakers => {
+         Bread.find()
+            .then(foundBreads => {
+               // trace('breads')(foundBreads);
+               res.render('index', {
+                  breads: foundBreads,
+                  bakers: foundBakers,
+                  title: 'Index'
+               });
+            })
       })
-
 })
 
 // RETRIVE - DATA SEED
@@ -65,6 +68,7 @@ breads.get('/:id/edit', (req, res) => {
    trace('/breads/:id/edit (GET)')(id);
    Baker.find()
       .then(foundBakers => {
+
          Bread.findById(id)
             .then(foundBread => {
                trace('breads')(foundBread);
