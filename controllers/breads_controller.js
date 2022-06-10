@@ -66,16 +66,16 @@ breads.get('/:id/edit', (req, res) => {
    Baker.find()
       .then(foundBakers => {
          Bread.findById(id)
-         .then(foundBread => {
-            trace('breads')(foundBread);
-            res.render('edit', {
-               bread: foundBread,
-               bakers: foundBakers
-            });
-         })
-         .catch(err => {
-            res.send('error404');
-         })
+            .then(foundBread => {
+               trace('breads')(foundBread);
+               res.render('edit', {
+                  bread: foundBread,
+                  bakers: foundBakers
+               });
+            })
+            .catch(err => {
+               res.send('error404');
+            })
       })
 })
 
@@ -90,18 +90,18 @@ breads.get('/:id', (req, res) => {
    Bread.findById(id)
       .populate('baker')
       .then(foundBread => {
-         res.render('show', {
-            bread: foundBread
-         })
-
-         // trace('breads')(foundBread);
-         // Bread.getBreadsBakedBy(foundBread.baker)
-         // .then((breadsBy) =>{
-         //    res.render('show', {
-         //       bread: foundBread,
-         //       breadsByBaker: breadsBy
-         //    });
+         // res.render('show', {
+         //    bread: foundBread
          // })
+
+         trace('breads')(foundBread);
+         Bread.getBreadsBakedBy(foundBread.baker)
+            .then((breadsBy) => {
+               res.render('show', {
+                  bread: foundBread,
+                  breadsByBaker: breadsBy
+               });
+            })
       })
       .catch(err => {
          res.send('error404');
