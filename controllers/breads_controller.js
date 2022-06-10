@@ -2,12 +2,13 @@
 
 const express = require('express')
 const Bread = require('../models/bread');
-const Seed = require('../models/bread_seed')
+const Bread_Seed = require('../models/bread_seed')
 const breads = express.Router()
 
 const {
    trace
 } = require('../helper');
+const Baker = require('../models/baker');
 
 // RETRIEVE - INDEX
 
@@ -28,10 +29,10 @@ breads.get('/', (req, res) => {
 
 // RETRIVE - DATA SEED
 
-breads.get('/data/bread_seed', (req, res) => {
+breads.get('/data/seed', (req, res) => {
    const params = req.params;
-   trace('/data/bread_seed (GET)')(params);
-   const breads = Seed;
+   trace('/data/seed (GET)')(params);
+   const breads = Bread_Seed;
    Bread.insertMany(breads)
       .then(createdBreads => {
          res.redirect('/breads')
@@ -44,7 +45,14 @@ breads.get('/data/bread_seed', (req, res) => {
 breads.get('/new', (req, res) => {
    const params = req.params;
    trace('/breads/new (GET)')(params);
-   res.render('new')
+   Baker.find()
+      .then(foundBakers => {
+         res.render('new', {
+            bakers: foundBakers
+         })
+      })
+
+
 });
 
 
@@ -54,18 +62,20 @@ breads.get('/:id/edit', (req, res) => {
    const params = req.params;
    const query = req.query;
    const id = params.id;
-   const error = query.error
    trace('/breads/:id/edit (GET)')(id);
-   Bread.findById(id)
-      .then(foundBread => {
-         trace('breads')(foundBread);
-         res.render('edit', {
-            bread: foundBread,
-            error
-         });
-      })
-      .catch(err => {
-         res.send('error404');
+   Baker.find()
+      .then(foundBakers => {
+         Bread.findById(id)
+         .then(foundBread => {
+            trace('breads')(foundBread);
+            res.render('edit', {
+               bread: foundBread,
+               bakers: foundBakers
+            });
+         })
+         .catch(err => {
+            res.send('error404');
+         })
       })
 })
 
@@ -77,21 +87,21 @@ breads.get('/:id', (req, res) => {
    const id = params.id;
    trace('/breads/:id (GET)')(id);
 
-   // let breadsByBaker;
-   // Bread.getBreadsBakedBy('Bakerooski').then((breadsBy) =>{
-   //    breadsByBaker = breadsBy;
-   // })
-
    Bread.findById(id)
+      .populate('baker')
       .then(foundBread => {
-         // trace('breads')(foundBread);
-         Bread.getBreadsBakedBy(foundBread.baker)
-         .then((breadsBy) =>{
-            res.render('show', {
-               bread: foundBread,
-               breadsByBaker: breadsBy
-            });
+         res.render('show', {
+            bread: foundBread
          })
+
+         // trace('breads')(foundBread);
+         // Bread.getBreadsBakedBy(foundBread.baker)
+         // .then((breadsBy) =>{
+         //    res.render('show', {
+         //       bread: foundBread,
+         //       breadsByBaker: breadsBy
+         //    });
+         // })
       })
       .catch(err => {
          res.send('error404');
@@ -103,7 +113,9 @@ breads.get('/:id', (req, res) => {
 breads.post('/', (req, res) => {
    const params = req.params;
    trace('/breads (POST)')(params);
-   if (!req.body.image) { req.body.image = undefined }
+   if (!req.body.image) {
+      req.body.image = undefined
+   }
    if (req.body.hasGluten === 'on') {
       req.body.hasGluten = true
    } else {
@@ -115,7 +127,7 @@ breads.post('/', (req, res) => {
          res.redirect('/breads')
       })
       .catch(err => {
-         res.redirect(`/breads`,)
+         res.redirect(`/breads`, )
       });
 })
 

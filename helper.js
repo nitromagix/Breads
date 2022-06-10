@@ -8,7 +8,11 @@ const trace = label => value => {
 
 const stub = (name) => `<h1>${name}</h1>`;
 
+const dateToMMDDYYYY = date => `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
+
+
 module.exports = {
    trace,
-   stub
+   stub,
+   dateToMMDDYYYY
 }

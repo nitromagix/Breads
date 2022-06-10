@@ -2,7 +2,7 @@ const React = require('react')
 const Default = require('./layouts/default')
 const { trace } = require('../helper');
 
-function Edit({ bread}) {
+function Edit({ bread, bakers }) {
    trace(' | edit.jsx')('Edit()')
    return (
       <Default>
@@ -33,16 +33,24 @@ function Edit({ bread}) {
             />
 
             <label htmlFor="baker">Baker</label>
-            <select 
-            name="baker" 
-            id="baker"
-            defaultValue={bread.baker}>
-               <option value="Yeaster">Yeaster</option>
+            <select
+               name="baker"
+               id="baker"
+               defaultValue={bread.baker}>
+
+
+               {bakers.map((baker) => {
+                  return (
+                     <option value={baker.id} key={baker.id}>{baker.name}</option>
+                  )
+               })}
+
+               {/* <option value="Yeaster">Yeaster</option>
                <option value="Bakerooski">Bakerooski</option>
                <option value="Yummy">Yummy</option>
                <option value="Doughboy">Doughboy</option>
                <option value="Crusty">Crusty</option>
-               <option value="Carbo">Carbo</option>
+               <option value="Carbo">Carbo</option> */}
             </select>
 
             <br />

@@ -21,11 +21,11 @@ function Show({ bread, breadsByBaker }) {
          </p>
          <img src={bread.image} alt={bread.name} />
          <p>{bread.getBakedBy()}</p>
-         <p>Other bread baked by {bread.baker}:
+         <p>Other bread baked by {bread.baker.name}:
             <ul>
-               {breadsByBaker.map((breadBy) => {
+               {/* {breadsByBaker.map((breadBy) => {
                   return <li><a href={`/breads/${breadBy.id}`}>{breadBy.name}</a></li>
-               })}
+               })} */}
             </ul>
          </p>
          {/* {breadsByBaker.toString()} */}
