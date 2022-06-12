@@ -83,58 +83,38 @@ breads.get('/:id', async (req, res) => {
    const id = params.id;
    trace('/breads/:id (GET)')(id);
 
-   const foundBread = await Bread.findById(id);
-   // const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.Baker);
+   const foundBread = await Bread
+      .findById(id)
+      .populate('baker');
+   const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.Baker);
 
-   // res.render('show', {
-   //    bread: foundBread,
-   //    breadsByBaker: foundBreadsByBaker
-   // });
-
-   Bread.findById(id)
-      .populate('baker')
-      .then(async foundBread => {
-         const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.baker);
-
-         res.render('show', {
-            bread: foundBread,
-            breadsByBaker: foundBreadsByBaker
-         });
-
-      })
-      .catch(err => {
-         console.log(err)
-         res.send('error404');
-      })
+   res.render('show', {
+      bread: foundBread,
+      breadsByBaker: foundBreadsByBaker
+   });
 })
 
 // CREATE
 
-breads.post('/', (req, res) => {
+breads.post('/', async (req, res) => {
    const params = req.params;
    trace('/breads (POST)')(params);
    if (!req.body.image) {
-      req.body.image = undefined
+      req.body.image = undefined;
    }
    if (req.body.hasGluten === 'on') {
-      req.body.hasGluten = true
+      req.body.hasGluten = true;
    } else {
-      req.body.hasGluten = false
+      req.body.hasGluten = false;
    }
-   Bread.create(req.body)
-      .then(bread => {
-         // throw new Error('Could not update bread');
-         res.redirect('/breads')
-      })
-      .catch(err => {
-         res.redirect(`/breads`, )
-      });
+   const newBread = await Bread.create(req.body);
+   res.redirect('/breads');
 })
 
 
 // UPDATE
 
-breads.put('/:id', (req, res) => {
+breads.put('/:id', async (req, res) => {
    const params = req.params;
    const id = params.id;
    const body = req.body;
@@ -144,14 +124,10 @@ breads.put('/:id', (req, res) => {
    } else {
       req.body.hasGluten = false
    }
-
-   Bread.findByIdAndUpdate(id, body, {
-         new: true
-      })
-      .then(updatedBread => {
-         console.log(updatedBread)
-         res.redirect(`/breads/${id}`)
-      });
+   
+   const updatedBread = await Bread.findByIdAndUpdate(id, body,{ new: true });
+   console.log(updatedBread)
+   res.redirect(`/breads/${id}`)
 
 })
 
@@ -159,14 +135,14 @@ breads.put('/:id', (req, res) => {
 
 // DELETE
 
-breads.delete('/:id', (req, res) => {
+breads.delete('/:id', async (req, res) => {
    const params = req.params;
    const id = params.id;
    trace('/breads/:arrayIndex (DELETE)')(id);
-   Bread.findByIdAndDelete(id)
-      .then(deletedBread => {
-         res.status(303).redirect('/breads')
-      })
+
+   const deletedBread = await Bread.findByIdAndDelete(id);
+   res.status(303).redirect('/breads');
+
 })
 
 

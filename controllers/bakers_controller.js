@@ -41,25 +41,35 @@ bakers.get('/:id', (req, res) => {
 
 // RETRIEVE - TEST
 
-bakers.get('/', (req, res) => {
+bakers.get('/', async (req, res) => {
    const id = req.params.id;
    trace('/ (TEST)')(id);
-   Baker.find()
-      .populate('breads')
-      .then(foundBakers => {
-         res.send(foundBakers)
-      })
+
+   const foundBakers = await Baker
+   .find()
+   .populate('breads');
+   res.send(foundBakers)
+
+   // Baker.find()
+   //    .populate('breads')
+   //    .then(foundBakers => {
+   //       res.send(foundBakers)
+   //    })
 })
 
 // DELETE
 
-bakers.delete('/:id', (req, res) => {
+bakers.delete('/:id', async (req, res) => {
    const id = req.params.id;
    trace('/:id (DELETE)')(id);
-   Baker.findByIdAndDelete(id)
-      .then(deletedBaker => {
-         res.status(303).redirect('/breads');
-      })
+
+   const deletedBaker = await Baker.findByIdAndDelete(id)
+   res.status(303).redirect('/breads');
+
+   // Baker.findByIdAndDelete(id)
+   //    .then(deletedBaker => {
+   //       res.status(303).redirect('/breads');
+   //    })
 })
 
 

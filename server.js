@@ -45,14 +45,14 @@ app.engine('jsx', expressReactViews)
 app.use('/breads', breadsController);
 app.use('/bakers', bakersController);
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
    trace('/')(req.params);
 
    res.send(stub('Breads'))
 
 });
 
-app.get('*', (req, res) => {
+app.get('*', async (req, res) => {
    const route = '404'
    const params = req.params;
    const query = req.query;
