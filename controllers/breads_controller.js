@@ -12,48 +12,46 @@ const Baker = require('../models/baker');
 
 // RETRIEVE - INDEX
 
-breads.get('/', (req, res) => {
+breads.get('/', async (req, res) => {
    const params = req.params;
    // trace('/breads (GET)')(params);
 
-   Baker.find()
-      .then(foundBakers => {
-         Bread.find()
-            .then(foundBreads => {
-               // trace('breads')(foundBreads);
-               res.render('index', {
-                  breads: foundBreads,
-                  bakers: foundBakers,
-                  title: 'Index'
-               });
-            })
-      })
+   const foundBakers = await Baker.find();
+   const foundBreads = await Bread.find().limit(20);
+   res.render('index', {
+      breads: foundBreads,
+      bakers: foundBakers,
+      title: 'Index'
+   });
+
 })
 
 // RETRIVE - DATA SEED
 
-breads.get('/data/seed', (req, res) => {
+breads.get('/data/seed', async (req, res) => {
    const params = req.params;
    trace('/data/seed (GET)')(params);
    const breads = Bread_Seed;
-   Bread.insertMany(breads)
-      .then(createdBreads => {
-         res.redirect('/breads')
-      })
+   await Bread.insertMany(breads);
+   res.redirect('/breads');
 })
 
 
 // RETRIEVE - NEW
 
-breads.get('/new', (req, res) => {
+breads.get('/new', async (req, res) => {
    const params = req.params;
    trace('/breads/new (GET)')(params);
-   Baker.find()
-      .then(foundBakers => {
-         res.render('new', {
-            bakers: foundBakers
-         })
-      })
+   const foundBakers = await Baker.find();
+   res.render('new', {
+      bakers: foundBakers
+   })
+   // Baker.find()
+   //    .then(foundBakers => {
+   //       res.render('new', {
+   //          bakers: foundBakers
+   //       })
+   //    })
 
 
 });
@@ -61,53 +59,51 @@ breads.get('/new', (req, res) => {
 
 // RETRIEVE - EDIT
 
-breads.get('/:id/edit', (req, res) => {
+breads.get('/:id/edit', async (req, res) => {
    const params = req.params;
    const query = req.query;
    const id = params.id;
    trace('/breads/:id/edit (GET)')(id);
-   Baker.find()
-      .then(foundBakers => {
 
-         Bread.findById(id)
-            .then(foundBread => {
-               trace('breads')(foundBread);
-               res.render('edit', {
-                  bread: foundBread,
-                  bakers: foundBakers
-               });
-            })
-            .catch(err => {
-               res.send('error404');
-            })
-      })
+   const foundBakers = await Baker.find();
+   const foundBread = await Bread.findById(id);
+   trace('breads')(foundBread);
+   res.render('edit', {
+      bread: foundBread,
+      bakers: foundBakers
+   });
+
 })
 
 
 // RETRIEVE - SHOW
 
-breads.get('/:id', (req, res) => {
+breads.get('/:id', async (req, res) => {
    const params = req.params;
    const id = params.id;
    trace('/breads/:id (GET)')(id);
 
+   const foundBread = await Bread.findById(id);
+   // const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.Baker);
+
+   // res.render('show', {
+   //    bread: foundBread,
+   //    breadsByBaker: foundBreadsByBaker
+   // });
+
    Bread.findById(id)
       .populate('baker')
-      .then(foundBread => {
-         // res.render('show', {
-         //    bread: foundBread
-         // })
+      .then(async foundBread => {
+         const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.baker);
 
-         trace('breads')(foundBread);
-         Bread.getBreadsBakedBy(foundBread.baker)
-            .then((breadsBy) => {
-               res.render('show', {
-                  bread: foundBread,
-                  breadsByBaker: breadsBy
-               });
-            })
+         res.render('show', {
+            bread: foundBread,
+            breadsByBaker: foundBreadsByBaker
+         });
+
       })
       .catch(err => {
+         console.log(err)
          res.send('error404');
       })
 })
