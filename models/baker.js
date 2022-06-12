@@ -38,11 +38,10 @@ bakerSchema.virtual('breads', {
 // hooks 
 
 bakerSchema.post('findOneAndDelete', async function() {
-   // const deletedBakerId = this._conditions._id;
-   // trace(`deleted baker ${deletedBakerId}`)('OK');
+   const deletedBakerId = this._conditions._id;
+   trace(`deleted baker ${deletedBakerId}`)('OK');
    await Bread.deleteMany({ baker: this._conditions._id });
-   // trace('deleted associated breads')('OK');
-
+   trace('deleted associated breads')('OK');
  })
 
 
