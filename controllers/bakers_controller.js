@@ -27,7 +27,7 @@ bakers.get('/data/baker_seed', (req, res) => {
 // RETRIEVE - SHOW
 
 bakers.get('/:id', (req, res) => {
-   const id = req.params.id
+   const id = req.params.id;
    trace('/:id (GET)')(id);
    Baker.findById(id)
       .populate('breads')
@@ -42,6 +42,8 @@ bakers.get('/:id', (req, res) => {
 // RETRIEVE - TEST
 
 bakers.get('/', (req, res) => {
+   const id = req.params.id;
+   trace('/ (TEST)')(id);
    Baker.find()
       .populate('breads')
       .then(foundBakers => {
@@ -49,6 +51,16 @@ bakers.get('/', (req, res) => {
       })
 })
 
+// DELETE
+
+bakers.delete('/:id', (req, res) => {
+   const id = req.params.id;
+   trace('/:id (DELETE)')(id);
+   Baker.findByIdAndDelete(id)
+      .then(deletedBaker => {
+         res.status(303).redirect('/breads');
+      })
+})
 
 
 // export
