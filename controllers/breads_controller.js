@@ -86,7 +86,7 @@ breads.get('/:id', async (req, res) => {
    const foundBread = await Bread
       .findById(id)
       .populate('baker');
-   const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.Baker);
+   const foundBreadsByBaker = await Bread.getBreadsBakedBy(foundBread.baker);
 
    res.render('show', {
       bread: foundBread,
