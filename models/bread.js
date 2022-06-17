@@ -7,7 +7,10 @@ const {
    Schema
 } = mongoose
 
-const {trace, dateToMMDDYYYY} = require('../helper')
+const {
+   trace,
+   dateToMMDDYYYY
+} = require('../helper')
 
 const breadSchema = new Schema({
    name: {
@@ -26,11 +29,17 @@ const breadSchema = new Schema({
 })
 
 // helper methods 
+// instance
 breadSchema.methods.getBakedBy = function () {
    return `${this.name} was baked with gloves by ${this.baker.name}, who has been with us since ${dateToMMDDYYYY(this.baker.startDate)}`
 }
 
- breadSchema.static('getBreadsBakedBy', function(baker) { return this.find({ baker }); });
+// static
+breadSchema.static('getBreadsBakedBy', function (baker) {
+   return this.find({
+      baker
+   });
+});
 
 const Bread = mongoose.model('Bread', breadSchema)
 
